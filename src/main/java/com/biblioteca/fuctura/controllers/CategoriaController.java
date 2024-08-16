@@ -49,9 +49,10 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public ResponseEntity<CategoriaDto> delete(@PathVariable Integer id) {
+        Categoria cat = categoriaService.findById(id);
         categoriaService.delete(id);
+        CategoriaDto catDto = modelMapper.map(cat, CategoriaDto.class);
+        return ResponseEntity.ok().body(catDto);
     }
-
-
 }
