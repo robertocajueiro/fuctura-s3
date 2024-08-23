@@ -42,17 +42,17 @@ public class CategoriaController {
     }
 
     @PutMapping("/{id}")
-    public Categoria update(@PathVariable Integer id, @RequestBody Categoria categoria) {
-        categoria.setId(id);
-        Categoria cat = categoriaService.update(categoria);
-        return cat;
+    public ResponseEntity<CategoriaDto> update(@PathVariable Integer id, @RequestBody CategoriaDto categoriaDto) {
+        categoriaDto.setId(id);
+        Categoria cat = categoriaService.update(categoriaDto);
+        CategoriaDto catDto = modelMapper.map(cat, CategoriaDto.class);
+        return ResponseEntity.ok().body(catDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CategoriaDto> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         Categoria cat = categoriaService.findById(id);
         categoriaService.delete(id);
-        CategoriaDto catDto = modelMapper.map(cat, CategoriaDto.class);
-        return ResponseEntity.ok().body(catDto);
+       return ResponseEntity.noContent().build();
     }
 }
