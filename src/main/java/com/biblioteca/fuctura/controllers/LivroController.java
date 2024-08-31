@@ -48,7 +48,8 @@ public class LivroController {
     }
 
     @PostMapping
-    public  ResponseEntity<LivroDto> save(@RequestParam(value = "categoria", defaultValue = "0")                                          Integer id_cat, @RequestBody LivroDto livroDto){
+    public  ResponseEntity<LivroDto> save(@RequestParam(value = "categoria", defaultValue = "0")
+                                              Integer id_cat, @RequestBody LivroDto livroDto) {
         Livro livro = livroService.save(id_cat, livroDto);
         return ResponseEntity.ok().body(new LivroDto(livro));
     }
