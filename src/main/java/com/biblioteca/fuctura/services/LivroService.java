@@ -1,5 +1,6 @@
 package com.biblioteca.fuctura.services;
 
+import com.biblioteca.fuctura.dtos.LivroDto;
 import com.biblioteca.fuctura.exceptions.ObjectNotFoundException;
 import com.biblioteca.fuctura.models.Categoria;
 import com.biblioteca.fuctura.models.Livro;
@@ -25,7 +26,7 @@ public class LivroService {
 
     public Livro findById(Integer id) {
         Optional<Livro> cat = livroRepository.findById(id);
-        if(cat.isPresent()) {
+        if (cat.isPresent()) {
             return cat.get();
         }
         throw new ObjectNotFoundException("Livro não encontrada!");
@@ -41,5 +42,22 @@ public class LivroService {
         return livroRepository.findByCategoriaNomeContainingIgnoreCase(nome);
     }
 
+    public Livro save(Integer id_cat, LivroDto livroDto) {
+        livroDto.setId(null);
+        Categoria cat = categoriaService.findById(id_cat);
+        livroDto.setCategoria(cat);
+        return livroRepository.save(new Livro(livroDto));
+    }
+
+    public Livro update(Integer id, LivroDto livroDto) {
+        Livro livro = findById(id);
+        livroDto.setId(livro.getId());
+        return livroRepository.save(new Livro(livroDto));
+    }
+
+    public void delete(Integer id) {
+        findById(id);
+        livroRepository.deleteById(id);
+    }
 
 }
