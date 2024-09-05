@@ -1,9 +1,20 @@
 package com.biblioteca.fuctura.dtos;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+
 public class CategoriaDto {
 
     private Integer id;
+
+    @NotEmpty(message = "O campo nome é necessário")
+    @Length(min = 3, max = 20, message = "O campo nome deve conter entre 3 e 20 caracteres")
     private String nome;
+
+    @NotEmpty(message = "O campo nome é necessário")
+    @Length(min = 20, max = 50, message = "O campo nome deve conter entre 20 e 50 caracteres")
+
     private String descricao;
 
     public CategoriaDto() {}

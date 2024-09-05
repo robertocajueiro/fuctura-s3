@@ -3,11 +3,13 @@ package com.biblioteca.fuctura.controllers;
 import com.biblioteca.fuctura.dtos.LivroDto;
 import com.biblioteca.fuctura.models.Livro;
 import com.biblioteca.fuctura.services.LivroService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,7 @@ public class LivroController {
     }
 
     @GetMapping
+    @Operation()
     public ResponseEntity<List<LivroDto>> findAll(@RequestParam (value = "categoria", defaultValue = "0") Integer id) {
         List<Livro> list = livroService.findAll(id);
         return ResponseEntity.ok().body(list.stream().map(obj -> new LivroDto(obj)).collect(Collectors.toList()));
@@ -49,13 +52,13 @@ public class LivroController {
 
     @PostMapping
     public  ResponseEntity<LivroDto> save(@RequestParam(value = "categoria", defaultValue = "0")
-                                              Integer id_cat, @RequestBody LivroDto livroDto) {
+                                              Integer id_cat, @Valid @RequestBody LivroDto livroDto) {
         Livro livro = livroService.save(id_cat, livroDto);
         return ResponseEntity.ok().body(new LivroDto(livro));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LivroDto> update(@PathVariable Integer id, @RequestBody LivroDto livroDto){
+    public ResponseEntity<LivroDto> update(@PathVariable Integer id, @Valid @RequestBody LivroDto livroDto){
         Livro livro = livroService.update(id, livroDto);
         return ResponseEntity.ok().body(new LivroDto(livro));
     }
